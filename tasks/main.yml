@@ -36,6 +36,7 @@
     owner: 'root'
     group: 'root'
     mode: '0755'
+  tags: [ provision ]
 
 - name: Save PHP-FPM local facts
   template:
@@ -45,10 +46,12 @@
     group: 'root'
     mode: '0644'
   register: php_register_local_facts
+  tags: [ provision ]
 
 - name: Gather facts if they were modified
   action: setup
   when: php_register_local_facts.changed
+  tags: [ provision ]
 
 - name: Install PHP packages
   apt:
