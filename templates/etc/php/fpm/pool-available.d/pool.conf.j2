@@ -430,13 +430,13 @@ env[{{ key }}] = {{ value }}
 ;php__admin_value[memory_limit] = 32M#}
 {% if item.php__flags is defined and item.php__flags %}
 {% for key, value in item.php__flags.iteritems() %}
-php_flags[{{ key }}] = {{ value }}
+php_flag[{{ key }}] = {{ value }}
 {% endfor %}
 
 {% endif %}
 {% if item.php__values is defined and item.php__values %}
 {% for key, value in item.php__values.iteritems() %}
-php_values[{{ key }}] = {{ value }}
+php_value[{{ key }}] = {{ value }}
 {% endfor %}
 
 {% endif %}
