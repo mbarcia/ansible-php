@@ -10,7 +10,7 @@ php__socket_listen_group: 'www-data'
 php__socket_listen_mode: '0660'
 
 # Memory limit
-php__memory_limit: '128M'
+php__memory_limit: '192M'
 
 # Install set of standard packages.
 #
@@ -46,7 +46,7 @@ php__host_packages: []
 # that can be useful either in production or development environment
 php__production: True
 
-# Default values for several global PHP5 options
+# Default values for several global PHP options
 php__max_execution_time: '30'
 php__max_input_time: '60'
 php__post_max_size: '8M'
@@ -56,6 +56,7 @@ php__upload_max_filesize: '{{ php__post_max_size }}'
 php__max_file_uploads: 20
 php__allow_url_fopen: 'On'
 php__cgi_fix_pathinfo: '0'
+php__daemonize: 'yes'
 
 # Default values used in pools when pool has none set
 php__default_pm: 'ondemand'

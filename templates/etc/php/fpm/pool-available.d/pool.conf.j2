@@ -335,6 +335,11 @@ request_slowlog_timeout = {{ item.request_slowlog_timeout }}
 request_terminate_timeout = {{ item.request_terminate_timeout | default(php__max_execution_time) }}
 
 {#
+; Send FPM to background. Set to 'no' to keep FPM in foreground for debugging.
+; Default Value: yes #}
+daemonize = {{ item.daemonize | default(php__daemonize) }}
+
+{#
 ; Set open file descriptor rlimit.
 ; Default Value: system defined value #}
 rlimit_files = {{ item.rlimit_files | default(php__default_rlimit_files) }}
@@ -418,11 +423,11 @@ env[{{ key }}] = {{ value }}
 
 ; Default Value: nothing is defined by default except the values in php.ini and
 ;                specified at startup with the -d argument
-;php_admin_value[sendmail_path] = /usr/sbin/sendmail -t -i -f www@my.domain.com
-;php_flag[display_errors] = off
-;php_admin_value[error_log] = /var/log/fpm-php.www.log
-;php_admin_flag[log_errors] = on
-;php_admin_value[memory_limit] = 32M#}
+;php__admin_value[sendmail_path] = /usr/sbin/sendmail -t -i -f www@my.domain.com
+;php__flag[display_errors] = off
+;php__admin_value[error_log] = /var/log/fpm-php.www.log
+;php__admin_flag[log_errors] = on
+;php__admin_value[memory_limit] = 32M#}
 {% if item.php__flags is defined and item.php__flags %}
 {% for key, value in item.php__flags.iteritems() %}
 php_flags[{{ key }}] = {{ value }}
