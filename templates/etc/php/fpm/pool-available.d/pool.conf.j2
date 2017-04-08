@@ -1,5 +1,11 @@
 ; {{ ansible_managed }}
 
+[global]
+{% if item.php__global_values is defined and item.php__global_values %}
+{% for key, value in item.php__global_values.iteritems() %}
+{{ key }} = {{ value }}
+{% endfor %}
+
 {#
 ; Start a new pool named 'www'.
 ; the variable $pool can we used in any directive and will be replaced by the
@@ -333,11 +339,6 @@ request_slowlog_timeout = {{ item.request_slowlog_timeout }}
 ; Available units: s(econds)(default), m(inutes), h(ours), or d(ays)
 ; Default Value: 0 #}
 request_terminate_timeout = {{ item.request_terminate_timeout | default(php__max_execution_time) }}
-
-{#
-; Send FPM to background. Set to 'no' to keep FPM in foreground for debugging.
-; Default Value: yes #}
-daemonize = {{ item.daemonize | default(php__daemonize) }}
 
 {#
 ; Set open file descriptor rlimit.
