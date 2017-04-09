@@ -1,5 +1,12 @@
 ; {{ ansible_managed }}
 
+[global]
+{% if item.php__global_values is defined and item.php__global_values %}
+{% for key, value in item.php__global_values.iteritems() %}
+{{ key }} = {{ value }}
+{% endfor %}
+{% endif %}
+
 {#
 ; Start a new pool named 'www'.
 ; the variable $pool can we used in any directive and will be replaced by the
@@ -418,20 +425,20 @@ env[{{ key }}] = {{ value }}
 
 ; Default Value: nothing is defined by default except the values in php.ini and
 ;                specified at startup with the -d argument
-;php_admin_value[sendmail_path] = /usr/sbin/sendmail -t -i -f www@my.domain.com
-;php_flag[display_errors] = off
-;php_admin_value[error_log] = /var/log/fpm-php.www.log
-;php_admin_flag[log_errors] = on
-;php_admin_value[memory_limit] = 32M#}
+;php__admin_value[sendmail_path] = /usr/sbin/sendmail -t -i -f www@my.domain.com
+;php__flag[display_errors] = off
+;php__admin_value[error_log] = /var/log/fpm-php.www.log
+;php__admin_flag[log_errors] = on
+;php__admin_value[memory_limit] = 32M#}
 {% if item.php__flags is defined and item.php__flags %}
 {% for key, value in item.php__flags.iteritems() %}
-php_flags[{{ key }}] = {{ value }}
+php_flag[{{ key }}] = {{ value }}
 {% endfor %}
 
 {% endif %}
 {% if item.php__values is defined and item.php__values %}
 {% for key, value in item.php__values.iteritems() %}
-php_values[{{ key }}] = {{ value }}
+php_value[{{ key }}] = {{ value }}
 {% endfor %}
 
 {% endif %}
