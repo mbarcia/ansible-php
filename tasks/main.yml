@@ -104,6 +104,14 @@
     mode: '0644'
   notify: "Restart php-fpm"
 
+- name: "Create directory for php/cli under etc"
+  file:
+    path: '{{ php__etc_base }}/cli'
+    state: 'directory'
+    owner: 'root'
+    group: 'root'
+    mode: '0755'
+
 - name: "Configure php.ini for CLI"
   template:
     src: 'etc/php/php.ini.j2'
