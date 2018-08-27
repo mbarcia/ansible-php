@@ -159,14 +159,12 @@
     path: "/sbin/my_init"
   register: php__my_init_output
   when: php__in_container|d(False)|bool
-  tags: [ provision ]
 
 - name: Make sure /etc/service/php-fpm exists
   file:
     path: /etc/service/php-fpm
     state: directory
   when: php__in_container|d(False)|bool and php__my_init_output.stat.exists
-  tags: [ provision ]
 
 - name: Install php-fpm at boot
   template:
@@ -174,4 +172,3 @@
     dest: /etc/service/php-fpm/run
     mode: "a+x"
   when: php__in_container|d(False)|bool and php__my_init_output.stat.exists
-  tags: [ provision ]
