@@ -29,6 +29,13 @@
   with_items: [ 'fpm', 'cli' ]
   tags: [ provision ]
 
+- name: Make sure mysql-client is installed
+  apt:
+    pkg: mysql-client
+    state: 'latest'
+    install_recommends: no
+  tags: [ provision ]
+
 - name: Make sure that Ansible local facts directory is present
   file:
     path: '/etc/ansible/facts.d'
