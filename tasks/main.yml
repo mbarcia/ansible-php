@@ -64,6 +64,7 @@
   apt:
     pkg: "{{ item|search('php.*-')|ternary(item, 'php' + php__version + '-' + item) }}"
     state: 'latest'
+    update_cache: yes
     install_recommends: no
   with_flattened:
     - '{{ php__packages }}'
