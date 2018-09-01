@@ -4,11 +4,14 @@
     path: "/sbin/my_init"
   register: php__my_init_output
 
-- name: Make sure /etc/service/php-fpm exists
+- name: Make sure paths exists
   file:
-    path: /etc/service/php-fpm
+    path: "{{ item }}"
     state: directory
   when: php__my_init_output.stat.exists
+  with_items:
+  - /etc/service/php-fpm
+  - /run/php
 
 - name: Install php-fpm at boot
   template:
