@@ -164,3 +164,4 @@
 
 - include: docker.yml
   when: php__in_container|d(False)|bool
+  tags: [ provision ]
