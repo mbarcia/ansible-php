@@ -22,4 +22,4 @@
 
 - name: Stop service
   command: service php{{ php__version }}-fpm stop
-  when: varnish_my_init_output.stat.exists
+  when: php__my_init_output.stat.exists
