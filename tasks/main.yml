@@ -29,6 +29,13 @@
   with_items: [ 'fpm', 'cli' ]
   tags: [ provision ]
 
+- name: Make sure mysql-client is installed
+  apt:
+    pkg: mysql-client
+    state: 'latest'
+    install_recommends: no
+  tags: [ provision ]
+
 - name: Make sure that Ansible local facts directory is present
   file:
     path: '/etc/ansible/facts.d'
@@ -57,6 +64,7 @@
   apt:
     pkg: "{{ item|search('php.*-')|ternary(item, 'php' + php__version + '-' + item) }}"
     state: 'latest'
+    update_cache: yes
     install_recommends: no
   with_flattened:
     - '{{ php__packages }}'
@@ -104,6 +112,14 @@
     mode: '0644'
   notify: "Restart php-fpm"
 
+- name: "Create directory for php/cli under etc"
+  file:
+    path: '{{ php__etc_base }}/cli'
+    state: 'directory'
+    owner: 'root'
+    group: 'root'
+    mode: '0755'
+
 - name: "Configure php.ini for CLI"
   template:
     src: 'etc/php/php.ini.j2'
@@ -146,24 +162,6 @@
 - meta: flush_handlers
   when: not php__in_container|d(False)|bool
 
-- name: Test if using a phusion image
-  stat:
-    path: "/sbin/my_init"
-  register: php__my_init_output
+- include: docker.yml
   when: php__in_container|d(False)|bool
-  tags: [ provision ]
-
-- name: Make sure /etc/service/php-fpm exists
-  file:
-    path: /etc/service/php-fpm
-    state: directory
-  when: php__in_container|d(False)|bool and php__my_init_output.stat.exists
-  tags: [ provision ]
-
-- name: Install php-fpm at boot
-  template:
-    src: etc/service/php-fpm-init.sh
-    dest: /etc/service/php-fpm/run
-    mode: "a+x"
-  when: php__in_container|d(False)|bool and php__my_init_output.stat.exists
   tags: [ provision ]

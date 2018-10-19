@@ -4,10 +4,10 @@
   service:
     name: "php{{ php__version }}-fpm"
     state: restarted
-  when: not packer|default(False)|bool
+  when: not packer|default(False)|bool and not php__in_container|d(False)|bool
 
 - name: "Reload php-fpm"
   service:
     name: "php{{ php__version }}-fpm"
     state: reloaded
-  when: not packer|default(False)|bool
+  when: not packer|default(False)|bool and not php__in_container|d(False)|bool

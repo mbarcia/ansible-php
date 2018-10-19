@@ -1,0 +1,25 @@
+---
+- name: Test if using a phusion image
+  stat:
+    path: "/sbin/my_init"
+  register: php__my_init_output
+
+- name: Make sure paths exists
+  file:
+    path: "{{ item }}"
+    state: directory
+  when: php__my_init_output.stat.exists
+  with_items:
+  - /etc/service/php-fpm
+  - /run/php
+
+- name: Install php-fpm at boot
+  template:
+    src: etc/service/php-fpm-init.sh
+    dest: /etc/service/php-fpm/run
+    mode: "a+x"
+  when: php__my_init_output.stat.exists
+
+- name: Stop service
+  command: service php{{ php__version }}-fpm stop
+  when: php__my_init_output.stat.exists
